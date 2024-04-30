@@ -83,8 +83,18 @@ return {
       vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', { noremap = true, desc = 'Send cell to slime' })
       vim.keymap.set('n', '<leader>os', function()
         print 'hello there'
-        vim.cmd 'bo vs term://ipython'
-        vim.cmd 'wincmd h'
+        if vim.bo.filetype == 'python' then
+          vim.cmd 'vs term://ipython'
+          vim.cmd 'wincmd h'
+        elseif vim.bo.filetype == 'typescript' then
+          vim.cmd 'vs term://npx ts-node'
+          vim.cmd 'wincmd h'
+        elseif vim.bo.filetype == 'javascript' then
+          vim.cmd 'vs term://node'
+          vim.cmd 'wincmd h'
+        else
+          print('no configured repl for', vim.bo.filetype)
+        end
       end)
     end,
   },
