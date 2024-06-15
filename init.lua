@@ -574,7 +574,11 @@ require('lazy').setup({
         -- pyright = {},
         rust_analyzer = {},
         pylsp = {},
-        denols = {},
+        sqlls = {
+          root_dir = function()
+            return vim.loop.cwd()
+          end,
+        },
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -614,10 +618,10 @@ require('lazy').setup({
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         'prettier',
-        'prettierd',
         'black',
         'isort',
         'markdownlint',
+        'sqlls',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -669,10 +673,12 @@ require('lazy').setup({
         --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
-        javascript = { { 'prettierd', 'prettier' } },
-        typescript = { { 'prettierd', 'prettier' } },
-        html = { { 'prettierd', 'prettier' } },
-        css = { { 'prettierd', 'prettier' } },
+        javascript = { 'prettier' },
+        typescript = { 'prettier' },
+        html = { 'prettier' },
+        css = { 'prettier' },
+        json = { 'prettier' },
+        sql = { 'sqlfmt' },
       },
     },
   },
@@ -856,6 +862,8 @@ require('lazy').setup({
 
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
+      local MiniMisc = require 'mini.misc'
+      MiniMisc.setup_auto_root()
     end,
   },
   { -- Highlight, edit, and navigate code
